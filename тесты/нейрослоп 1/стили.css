@@ -1,0 +1,44 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden; /* Убираем полосы прокрутки */
+    background-color: #23233C;
+    cursor: crosshair; /* Для наглядности меняем курсор */
+    position: relative;
+}
+
+
+
+.square {
+    position: absolute;
+    box-sizing: border-box;
+    width: 50px;
+    height: 50px;
+    background-color: #000;
+    border: 2px solid #f00;
+    border-radius: 4px;
+}
+
+
+
+.control-panel {
+    --panel-bg: #141423;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10px 1000px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px); /* Размытие фона */
+    background-color: var(--panel-bg);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 100;
+
+    /* Фиксированная позиция в центре верхней части экрана */
+    position: fixed;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+}
