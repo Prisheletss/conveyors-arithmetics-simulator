@@ -1,6 +1,6 @@
 <h1 align="center">conveyors-arithmetics-simulator</h1>
 
-Бесплатный сайт с 2д квестами по распределению ресурсов на конвейерах. Вдохновлён играми по типу Factorio, Satisfactory, Shapez, Infinifactory и др
+Бесплатный сайт с 2д квестами по распределению ресурсов на конвейерах. Вдохновлён играми по типу Factorio, Satisfactory, Shapez, Infinifactory, Mindustry и др
 
 
 
