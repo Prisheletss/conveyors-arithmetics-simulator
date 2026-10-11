@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Генератор квадратов</title>
+    <style>
+        /* 
+         * Важно: убираем стандартные отступы у body, 
+         * иначе координаты клика будут смещены.
+         */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden; /* Убираем полосы прокрутки */
+            background-color: #23233C;
+            cursor: crosshair; /* Для наглядности меняем курсор */
+            position: relative;
+        }
+
+        .square {
+            position: absolute;
+            /* Захардкоженные параметры, которые можно менять */
+            width: 50px;
+            height: 50px;
+            background-color: #4a90e2; 
+            border: 2px solid #357ab8;
+            box-sizing: border-box; /* Чтобы рамка не увеличивала размер квадрата */
+            border-radius: 8px;
+            /* Позволяем квадратам реагировать на события мыши */
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+<script src="скрипт.js"></script>
+
+</body>
+</html>
