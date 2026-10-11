@@ -9,10 +9,17 @@ body, html {
     position: relative;
 }
 
-/* Отключаем обработку кликов и смену курсора на всем теле страницы */
+
+
+
+
 body {
     pointer-events: none;
 }
+
+
+
+
 
 #workspace {
     position: absolute;
@@ -33,6 +40,10 @@ body {
     cursor: crosshair;
 }
 
+
+
+
+
 .square {
     position: absolute;
     box-sizing: border-box;
@@ -42,6 +53,10 @@ body {
     border: 2px solid #f00;
     border-radius: 4px;
 }
+
+
+
+
 
 .control-panel {
     --panel-bg: #141423;
@@ -63,4 +78,65 @@ body {
 
     /* Важно: включаем кликабельность для кнопок */
     pointer-events: auto;
+
+    opacity: 1;
+    transition: opacity 0.2s ease, transform 0.1s ease-in-out;
+}
+
+
+
+
+
+.square.selected {
+    border-color: #0ff;
+    box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.6);
+    z-index: 10;
+}
+
+
+
+
+
+.selection-box {
+    position: absolute;
+    border: 1px dashed rgba(0, 255, 255, 0.8);
+    background-color: rgba(0, 255, 255, 0.1);
+    pointer-events: none;
+    z-index: 5;
+    display: none;
+}
+
+
+
+
+
+.cursor-select {
+    cursor: grab !important;
+}
+
+
+
+
+
+.cursor-select:active {
+    cursor: grabbing !important;
+}
+
+
+
+
+
+.control-panel button.selected-mode {
+    border: 2px solid #0ff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+
+
+
+
+.control-panel button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
 }
