@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\GitHub\\conveyors-arithmetics-simulator\\\u0442\u0435\u0441\u0442\u044B\\simulator_1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D9BC57B8-F76D-AA22-07AD-8EB481C7BA8F}|simulator_1\\simulator_1.esproj|d:\\github\\conveyors-arithmetics-simulator\\\u0442\u0435\u0441\u0442\u044B\\simulator_1\\simulator_1\\app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{D9BC57B8-F76D-AA22-07AD-8EB481C7BA8F}|simulator_1\\simulator_1.esproj|solutionrelative:simulator_1\\app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "app.js",
+              "DocumentMoniker": "D:\\GitHub\\conveyors-arithmetics-simulator\\\u0442\u0435\u0441\u0442\u044B\\simulator_1\\simulator_1\\app.js",
+              "RelativeDocumentMoniker": "simulator_1\\app.js",
+              "ToolTip": "D:\\GitHub\\conveyors-arithmetics-simulator\\\u0442\u0435\u0441\u0442\u044B\\simulator_1\\simulator_1\\app.js",
+              "RelativeToolTip": "simulator_1\\app.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-10-09T18:39:33.664Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
