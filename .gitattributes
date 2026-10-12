@@ -1,2 +1,6 @@
-тесты/** merge=ours
+тесты/* merge=ours
 мыслишки.md merge=ours
+*/.vs/* merge=ours
+*/.vscode/* merge=ours
+*/node_modules/* merge=ours
+*/obj/* merge=ours
