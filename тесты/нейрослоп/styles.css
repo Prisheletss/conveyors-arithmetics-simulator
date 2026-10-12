@@ -1,0 +1,154 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: #23233C;
+    cursor: default;
+    position: relative;
+}
+
+body {
+    pointer-events: none;
+}
+
+#workspace {
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    transform: translateX(-50%);
+    width: 80vw;
+    height: 80vh;
+    background-color: #1a1a2e;
+    border: 2px solid #4a4a6c;
+    border-radius: 8px;
+    box-sizing: border-box;
+    pointer-events: auto;
+    cursor: crosshair;
+}
+
+.square {
+    position: absolute;
+    box-sizing: border-box;
+    width: 50px;
+    height: 50px;
+    background-color: #000;
+    border: 2px solid #000;
+    border-radius: 4px;
+}
+
+.control-panel {
+    --panel-bg: #141423;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    background-color: var(--panel-bg);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: auto;
+    opacity: 1;
+    transition: opacity 0.2s ease, transform 0.1s ease-in-out;
+}
+
+.control-panel button {
+    width: 80px;
+    height: 40px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    transition: transform 0.05s ease, box-shadow 0.2s ease, border 0.2s ease;
+}
+
+.control-panel button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.control-panel button:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.control-panel button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.control-panel button.selected-mode {
+    border: 2px solid #0ff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+.control-panel button[data-mode="draw"],
+.control-panel button[data-mode="select"] {
+    background-color: #555;
+}
+
+.control-panel button[data-mode="draw"]:hover:not(:disabled),
+.control-panel button[data-mode="select"]:hover:not(:disabled) {
+    background-color: #666;
+}
+
+.control-panel button[data-mode="draw"].selected-mode,
+.control-panel button[data-mode="select"].selected-mode {
+    background-color: #444;
+}
+
+.control-panel button[data-color="#ff0000"] {
+    background-color: #ff0000;
+}
+
+.control-panel button[data-color="#ff0000"]:hover:not(:disabled) {
+    background-color: #ff3333;
+}
+
+.control-panel button[data-color="#00ff00"] {
+    background-color: #00ff00;
+}
+
+.control-panel button[data-color="#00ff00"]:hover:not(:disabled) {
+    background-color: #33ff33;
+}
+
+.control-panel button[data-color="#0000ff"] {
+    background-color: #0000ff;
+}
+
+.control-panel button[data-color="#0000ff"]:hover:not(:disabled) {
+    background-color: #3333ff;
+}
+
+.square.selected {
+    border-color: #0ff;
+    box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.6);
+    z-index: 10;
+}
+
+.selection-box {
+    position: absolute;
+    border: 1px dashed rgba(0, 255, 255, 0.8);
+    background-color: rgba(0, 255, 255, 0.1);
+    pointer-events: none;
+    z-index: 5;
+    display: none;
+}
+
+.cursor-select {
+    cursor: grab !important;
+}
+
+.cursor-select:active {
+    cursor: grabbing !important;
+}

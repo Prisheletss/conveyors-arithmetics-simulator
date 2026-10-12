@@ -1,2 +1,18 @@
 *.vs
+*/*.vs
+*.json
+*/*.json
+.bin/*
+*/.bin/*
+.vscode/*
+*/.vscode/*
+node_modeules/*
+*/node_modules/*
+obj/*
+*/obj/*
+*.esproj
+*/*.esproj
+
+
+
 
