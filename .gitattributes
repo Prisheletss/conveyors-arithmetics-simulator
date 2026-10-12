@@ -1,2 +1,2 @@
-тесты/
-мыслишки.md
+тесты/** merge=ours
+мыслишки.md merge=ours
