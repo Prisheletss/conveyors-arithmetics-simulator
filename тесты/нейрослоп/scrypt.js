@@ -59,16 +59,7 @@ function initControlPanel() {
     colors.forEach(item => {
         const btn = document.createElement('button');
         btn.textContent = item.label;
-        btn.style.cssText = `
-            width: 80px;
-            height: 40px;
-            border-radius: 6px;
-            background-color: ${item.hex};
-            cursor: pointer;
-            font-weight: bold;
-            color: white;
-            border: none;
-        `;
+        btn.dataset.color = item.hex;
         btn.addEventListener('click', () => setCurrentColor(item.hex));
         panel.appendChild(btn);
     });
@@ -232,8 +223,6 @@ document.addEventListener('mousedown', function(event) {
         const clickedSquare = squaresList.find(sq => sq.element === event.target);
 
         if (clickedSquare) {
-            // Если кликнули по уже выделенному квадрату и Shift не зажат — 
-            // не сбрасываем выделение, просто готовимся к перетаскиванию группы.
             const isAlreadySelected = selectedSquares.includes(clickedSquare);
             const append = event.shiftKey;
 
@@ -243,27 +232,22 @@ document.addEventListener('mousedown', function(event) {
                 }
                 selectSquare(clickedSquare, append);
             } 
-            // Если квадрат уже был в группе и Shift не нажат, мы просто продолжаем двигать группу.
-            // Если Shift нажат, а квадрат уже в группе — убираем его (toggle).
             else if (append) {
                 clickedSquare.element.classList.remove('selected');
                 const index = selectedSquares.indexOf(clickedSquare);
                 if (index !== -1) {
                     selectedSquares.splice(index, 1);
                 }
-                // Если после удаления группа пуста — нечего двигать
                 if (selectedSquares.length === 0) {
                     return;
                 }
             }
 
-            // Подготовка к перетаскиванию ВСЕЙ текущей группы
             isDragging = true;
-            draggedSquare = clickedSquare; // храним только для смены курсора, двигать будем массив
+            draggedSquare = clickedSquare;
             dragStartMouse.x = event.clientX;
             dragStartMouse.y = event.clientY;
 
-            // Сохраняем начальные позиции КАЖДОГО квадрата в группе
             selectedSquares.forEach(sq => {
                 sq.startX = parseFloat(sq.element.style.left);
                 sq.startY = parseFloat(sq.element.style.top);
@@ -295,14 +279,12 @@ document.addEventListener('mousemove', function(event) {
             const deltaX = event.clientX - dragStartMouse.x;
             const deltaY = event.clientY - dragStartMouse.y;
 
-            // Двигаем каждый квадрат группы относительно ЕГО СОБСТВЕННОЙ начальной позиции
             selectedSquares.forEach(sq => {
                 const newX = sq.startX + deltaX;
                 const newY = sq.startY + deltaY;
 
                 sq.element.style.left = `${Math.max(-offset, Math.min(newX, rect.width - SQUARE_SIZE + offset))}px`;
                 sq.element.style.top = `${Math.max(-offset, Math.min(newY, rect.height - SQUARE_SIZE + offset))}px`;
-                // Обновляем данные в массиве squaresList для сохранения состояния
                 const data = squaresList.find(s => s.id === sq.id);
                 if (data) {
                     data.x = parseFloat(sq.element.style.left);

@@ -9,17 +9,9 @@ body, html {
     position: relative;
 }
 
-
-
-
-
 body {
     pointer-events: none;
 }
-
-
-
-
 
 #workspace {
     position: absolute;
@@ -32,17 +24,9 @@ body {
     border: 2px solid #4a4a6c;
     border-radius: 8px;
     box-sizing: border-box;
-    
-    /* Включаем обработку событий только для этой зоны */
     pointer-events: auto;
-    
-    /* Курсор внутри рабочей зоны */
     cursor: crosshair;
 }
-
-
-
-
 
 .square {
     position: absolute;
@@ -53,10 +37,6 @@ body {
     border: 2px solid #000;
     border-radius: 4px;
 }
-
-
-
-
 
 .control-panel {
     --panel-bg: #141423;
@@ -70,32 +50,91 @@ body {
     background-color: var(--panel-bg);
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     z-index: 100;
-
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-
-    /* включаем кликабельность для кнопок */
     pointer-events: auto;
-
     opacity: 1;
     transition: opacity 0.2s ease, transform 0.1s ease-in-out;
 }
 
+.control-panel button {
+    width: 80px;
+    height: 40px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    transition: transform 0.05s ease, box-shadow 0.2s ease, border 0.2s ease;
+}
 
+.control-panel button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
 
+.control-panel button:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
 
+.control-panel button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.control-panel button.selected-mode {
+    border: 2px solid #0ff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+.control-panel button[data-mode="draw"],
+.control-panel button[data-mode="select"] {
+    background-color: #555;
+}
+
+.control-panel button[data-mode="draw"]:hover:not(:disabled),
+.control-panel button[data-mode="select"]:hover:not(:disabled) {
+    background-color: #666;
+}
+
+.control-panel button[data-mode="draw"].selected-mode,
+.control-panel button[data-mode="select"].selected-mode {
+    background-color: #444;
+}
+
+.control-panel button[data-color="#ff0000"] {
+    background-color: #ff0000;
+}
+
+.control-panel button[data-color="#ff0000"]:hover:not(:disabled) {
+    background-color: #ff3333;
+}
+
+.control-panel button[data-color="#00ff00"] {
+    background-color: #00ff00;
+}
+
+.control-panel button[data-color="#00ff00"]:hover:not(:disabled) {
+    background-color: #33ff33;
+}
+
+.control-panel button[data-color="#0000ff"] {
+    background-color: #0000ff;
+}
+
+.control-panel button[data-color="#0000ff"]:hover:not(:disabled) {
+    background-color: #3333ff;
+}
 
 .square.selected {
     border-color: #0ff;
     box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.6);
     z-index: 10;
 }
-
-
-
-
 
 .selection-box {
     position: absolute;
@@ -106,37 +145,10 @@ body {
     display: none;
 }
 
-
-
-
-
 .cursor-select {
     cursor: grab !important;
 }
 
-
-
-
-
 .cursor-select:active {
     cursor: grabbing !important;
-}
-
-
-
-
-
-.control-panel button.selected-mode {
-    border: 2px solid #0ff;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
-}
-
-
-
-
-
-.control-panel button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none !important;
 }
