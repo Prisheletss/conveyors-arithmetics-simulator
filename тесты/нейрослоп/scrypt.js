@@ -12,7 +12,8 @@ let mode = 'draw'; // 'draw' или 'select'
 
 // Состояние перетаскивания
 let isDragging = false;
-let dragOffset = { x: 0, y: 0 };
+let dragStartMouse = { x: 0, y: 0 };
+let dragStartSquarePos = { x: 0, y: 0 };
 let draggedSquare = null;
 
 // Состояние рамки
@@ -46,15 +47,6 @@ function setMode(newMode) {
     if (activeBtn) {
         activeBtn.classList.add('selected-mode');
     }
-
-    // В режиме выделения кнопка рисования недоступна
-    const drawBtn = document.querySelector('.control-panel button[data-mode="draw"]');
-    if (drawBtn) {
-        drawBtn.disabled = (mode === 'select');
-    }
-
-    // Меняем курсор тела
-    document.body.classList.toggle('cursor-select', mode === 'select');
 }
 
 // --- ФУНКЦИИ РАБОТЫ С КВАДРАТАМИ ---
@@ -66,6 +58,7 @@ function createSquare(x, y) {
     square.style.height = `${SQUARE_SIZE}px`;
     square.style.backgroundColor = currentColor;
     square.style.border = SQUARE_BORDER;
+    square.style.position = 'absolute';
 
     const offset = SQUARE_SIZE / 2;
     const rect = workspace.getBoundingClientRect();
@@ -91,6 +84,9 @@ function createSquare(x, y) {
 function setCurrentColor(color) {
     currentColor = color;
 }
+
+// Массив выделенных объектов (исправлено: теперь это глобальная переменная)
+let selectedSquares = [];
 
 function selectSquare(squareData, append = false) {
     if (!append) deselectAllSquares();
@@ -161,14 +157,11 @@ function initControlPanel() {
     initSelectionBox();
 }
 
-// --- ГЛОБАЛЬНЫЙ МАССИВ ВЫДЕЛЕНИЯ (для удаления) ---
-let selectedSquares = [];
-
 // --- ОБРАБОТЧИКИ СОБЫТИЙ ---
+
 document.addEventListener('mousedown', function(event) {
     if (event.button !== 0) return;
 
-    // ВАЖНО: Игнорируем клики по кнопкам панели и самой рамке
     if (event.target.closest('.control-panel') || event.target === selectionBox) {
         return;
     }
@@ -176,26 +169,51 @@ document.addEventListener('mousedown', function(event) {
     if (mode === 'draw' && workspace.contains(event.target)) {
         deselectAllSquares();
         createSquare(event.clientX, event.clientY);
-        return; // Прерываем, чтобы не сработала логика выделения
+        return;
     }
 
     if (mode === 'select' && workspace.contains(event.target)) {
         const clickedSquare = squaresList.find(sq => sq.element === event.target);
 
         if (clickedSquare) {
+            // Если кликнули по уже выделенному квадрату и Shift не зажат — 
+            // не сбрасываем выделение, просто готовимся к перетаскиванию группы.
+            const isAlreadySelected = selectedSquares.includes(clickedSquare);
             const append = event.shiftKey;
-            if (!append && !clickedSquare.element.classList.contains('selected')) {
-                deselectAllSquares();
-            }
-            selectSquare(clickedSquare, append);
 
+            if (!isAlreadySelected) {
+                if (!append) {
+                    deselectAllSquares();
+                }
+                selectSquare(clickedSquare, append);
+            } 
+            // Если квадрат уже был в группе и Shift не нажат, мы просто продолжаем двигать группу.
+            // Если Shift нажат, а квадрат уже в группе — убираем его (toggle).
+            else if (append) {
+                clickedSquare.element.classList.remove('selected');
+                const index = selectedSquares.indexOf(clickedSquare);
+                if (index !== -1) {
+                    selectedSquares.splice(index, 1);
+                }
+                // Если после удаления группа пуста — нечего двигать
+                if (selectedSquares.length === 0) {
+                    return;
+                }
+            }
+
+            // Подготовка к перетаскиванию ВСЕЙ текущей группы
             isDragging = true;
-            draggedSquare = clickedSquare;
-            const refRect = clickedSquare.element.getBoundingClientRect();
-            dragOffset.x = event.clientX - refRect.left;
-            dragOffset.y = event.clientY - refRect.top;
+            draggedSquare = clickedSquare; // храним только для смены курсора, двигать будем массив
+            dragStartMouse.x = event.clientX;
+            dragStartMouse.y = event.clientY;
+
+            // Сохраняем начальные позиции КАЖДОГО квадрата в группе
+            selectedSquares.forEach(sq => {
+                sq.startX = parseFloat(sq.element.style.left);
+                sq.startY = parseFloat(sq.element.style.top);
+            });
+            return;
         } else {
-            // Клик по пустому месту — начало рамки
             isSelecting = true;
             selectStart = { x: event.clientX, y: event.clientY };
             tempSelection = [];
@@ -210,26 +228,26 @@ document.addEventListener('mousemove', function(event) {
     }
 
     if (mode === 'select') {
-        if (isDragging && draggedSquare) {
+        if (isDragging && selectedSquares.length > 0) {
             const rect = workspace.getBoundingClientRect();
             const offset = SQUARE_SIZE / 2;
 
-            const draggedRect = draggedSquare.element.getBoundingClientRect();
-            const targetX = event.clientX - dragOffset.x;
-            const targetY = event.clientY - dragOffset.y;
+            const deltaX = event.clientX - dragStartMouse.x;
+            const deltaY = event.clientY - dragStartMouse.y;
 
-            const deltaX = targetX - draggedRect.left;
-            const deltaY = targetY - draggedRect.top;
-
+            // Двигаем каждый квадрат группы относительно ЕГО СОБСТВЕННОЙ начальной позиции
             selectedSquares.forEach(sq => {
-                const sqRect = sq.element.getBoundingClientRect();
-                const newX = sqRect.left + deltaX - rect.left;
-                const newY = sqRect.top + deltaY - rect.top;
+                const newX = sq.startX + deltaX;
+                const newY = sq.startY + deltaY;
 
                 sq.element.style.left = `${Math.max(-offset, Math.min(newX, rect.width - SQUARE_SIZE + offset))}px`;
                 sq.element.style.top = `${Math.max(-offset, Math.min(newY, rect.height - SQUARE_SIZE + offset))}px`;
-                sq.x = parseFloat(sq.element.style.left);
-                sq.y = parseFloat(sq.element.style.top);
+                // Обновляем данные в массиве squaresList для сохранения состояния
+                const data = squaresList.find(s => s.id === sq.id);
+                if (data) {
+                    data.x = parseFloat(sq.element.style.left);
+                    data.y = parseFloat(sq.element.style.top);
+                }
             });
         }
 
@@ -251,7 +269,6 @@ document.addEventListener('mousemove', function(event) {
 
             const selectionRect = selectionBox.getBoundingClientRect();
             
-            // Визуальное выделение внутри рамки
             squaresList.forEach(squareData => {
                 const sqRect = squareData.element.getBoundingClientRect();
                 if (isRectsOverlap(sqRect, selectionRect)) {
