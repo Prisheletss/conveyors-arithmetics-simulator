@@ -5,11 +5,17 @@
 .bin/*
 */.bin/*
 .vscode/*
+.vscode/
 */.vscode/*
+*/.vscode/
 node_modeules/*
+node_modeules/
 */node_modules/*
+*/node_modules/
 obj/*
+obj/
 */obj/*
+*/obj/
 *.esproj
 */*.esproj
 
